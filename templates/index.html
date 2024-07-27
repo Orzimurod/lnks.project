@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title text-center">Havola Qisqartiruvchi</h3>
+                        {% if request.user.is_authenticated %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="long-url">Havolangizni kiriting:</label>
+                                <input type="url" name="original_url" class="form-control" placeholder="https://masalan.uz" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Qisqartirish</button>
+                        </form>
+                        <div class="short-url mt-4" id="short-url" {% if not url %} style="display: none;" {% endif %}>
+                            <p>Qisqartirilgan link: <a href="{{ url }}" target="_blank" id="short-url-link">{{ url }}</a></p>
+                        </div>
+                        {% else %}
+                        <p> saytdan foydalanish <a href="{% url 'login' %}">ro'yhatdan o'ting</a>yoki saytga <a href="{% url 'login' %}">kiring</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+{% endblock content %}

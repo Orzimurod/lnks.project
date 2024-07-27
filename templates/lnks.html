@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Link List{% endblock %}
+{% block style %}
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+    }
+</style>
+{% endblock style %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Sizning linklaringiz</h4>
+                    <a href="{% url 'home' %}">Yangi qo'shish</a>
+                </div>
+                <div class="card-body">
+                    {% if links %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Original URL</th>
+                                <th>Short Code</th>
+                                <th>Clicks</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for link in links %}
+                            <tr>
+                                <td>{{ link.original_url }}</td>
+                                <td>{{ link.short_code }}</td>
+                                <td>{{ link.clicks.all.count }}</td>
+                                <td>
+                                    <button class="button" onclick="copyToClipboard('http:\r//localhost:8000/{{ link.short_code }}')">Copy</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                        <p>Sizda hech qanday link mavjud emas.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert("Short code copied to clipboard!");
+        }, () => {
+            alert("Failed to copy short code!");
+        });
+    }
+</script>
+{% endblock script %}
